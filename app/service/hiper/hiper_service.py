@@ -77,11 +77,10 @@ class HiperService:
         codigo = 0
         codigos_distritos = requests.get(f'https://servicodados.ibge.gov.br/api/v1/localidades/estados/{uf}/distritos').json()
         for cod_distrito in codigos_distritos:
-            print(f"city {city.lower()}")
-            print(f"current {cod_distrito['nome'].lower()}")
             if cod_distrito['municipio']['nome'].lower() == city.lower():
                 codigo = cod_distrito['municipio']['id']
-        print("Codigo encontrado: {}".format(codigo))
+
+        print("Code found: {}".format(codigo))
         return codigo
 
 

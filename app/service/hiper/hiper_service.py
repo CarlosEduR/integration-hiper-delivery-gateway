@@ -27,25 +27,27 @@ class HiperService:
         hiper_order['enderecoDeEntrega'] = {}
         hiper_order['itens'] = {}
 
-        hiper_order['cliente']['documento'] = order_data["customer"]["document"].replace(".", "")
-        hiper_order['cliente']['nomeDoCliente'] = order_data["customer"]["lastName"]
-        hiper_order['cliente']['email'] = order_data["customer"]["email"]
+        customer_data = order_data["customer"]
+        hiper_order['cliente']['documento'] = customer_data["document"].replace(".", "")
+        hiper_order['cliente']['nomeDoCliente'] = f"{customer_data['firstName']} {customer_data['lastName']}"
+        hiper_order['cliente']['email'] = customer_data["email"]
         hiper_order['cliente']['inscricaoEstadual'] = ''
         hiper_order['cliente']['nomeFantasia'] = ''
 
-        hiper_order['enderecoDeCobranca']['cep'] = order_data["address"]["zipcode"]
-        hiper_order['enderecoDeCobranca']['codigoIbge'] = self.get_ibge_code(order_data["address"]["city"], order_data["address"]["state"])
-        hiper_order['enderecoDeCobranca']['logradouro'] = order_data["address"]["street"]
-        hiper_order['enderecoDeCobranca']['bairro'] = order_data["address"]["neighborhood"]
-        hiper_order['enderecoDeCobranca']['numero'] = order_data["address"]["number"]
-        hiper_order['enderecoDeCobranca']['complemento'] = order_data["address"]["complement"]
+        address_data = order_data["address"]
+        hiper_order['enderecoDeCobranca']['cep'] = address_data["zipcode"] if address_data["zipcode"] else '74290-040'
+        hiper_order['enderecoDeCobranca']['codigoIbge'] = self.get_ibge_code(address_data["city"], address_data["state"])
+        hiper_order['enderecoDeCobranca']['logradouro'] = address_data["street"]
+        hiper_order['enderecoDeCobranca']['bairro'] = address_data["neighborhood"]
+        hiper_order['enderecoDeCobranca']['numero'] = address_data["number"]
+        hiper_order['enderecoDeCobranca']['complemento'] = address_data["complement"]
 
-        hiper_order['enderecoDeEntrega']['cep'] = order_data["address"]["zipcode"]
-        hiper_order['enderecoDeEntrega']['codigoIbge'] = self.get_ibge_code(order_data["address"]["city"], order_data["address"]["state"])
-        hiper_order['enderecoDeEntrega']['logradouro'] = order_data["address"]["street"]
-        hiper_order['enderecoDeEntrega']['bairro'] = order_data["address"]["neighborhood"]
-        hiper_order['enderecoDeEntrega']['numero'] = order_data["address"]["number"]
-        hiper_order['enderecoDeEntrega']['complemento'] = order_data["address"]["complement"]
+        hiper_order['enderecoDeEntrega']['cep'] = address_data["zipcode"] if address_data["zipcode"] else '74290-040'
+        hiper_order['enderecoDeEntrega']['codigoIbge'] = self.get_ibge_code(address_data["city"], address_data["state"])
+        hiper_order['enderecoDeEntrega']['logradouro'] = address_data["street"]
+        hiper_order['enderecoDeEntrega']['bairro'] = address_data["neighborhood"]
+        hiper_order['enderecoDeEntrega']['numero'] = address_data["number"]
+        hiper_order['enderecoDeEntrega']['complemento'] = address_data["complement"]
 
         hiper_order['itens'] = self.parse_all_products(order_data["items"])
 
